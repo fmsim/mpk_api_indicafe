@@ -1,6 +1,6 @@
 const Category = require("../models/category")
 const createError = require("http-errors")
-const {categorySchema} = require("../validators/schema-validator")
+const { categorySchema } = require("../validators/schema-validator")
 const mongoose = require("mongoose")
 
 exports.getCategory = (req, res) => {
@@ -14,7 +14,6 @@ exports.getCategoryId = async (req, res, next, id) => {
 
     req.category = category
     next()
-
   } catch (error) {
     console.log("🚀 ~ file: category.js ~ line 18 ~ exports.getCategoryId= ~ error", error)
     // @ts-ignore
@@ -22,7 +21,7 @@ exports.getCategoryId = async (req, res, next, id) => {
       return next(createError(400, "Invalid Category id"))
     }
 
-    next(error)    
+    next(error)
   }
 }
 
@@ -34,11 +33,10 @@ exports.fetchAllCategories = async (req, res, next) => {
     }
 
     res.status(200).json(result)
-  } catch (error){
-    console.log("🚀 ~ file: category.js ~ line 36 ~ exports.fetchAllCategories= ~ error", error)
+  } catch (error) {
+    console.log("🚀 ~ file: category.js ~ line 37 ~ exports.fetchAllCategories= ~ error", error)
     next(error)
   }
-  
 }
 
 exports.createCategory = async (req, res, next) => {
@@ -47,24 +45,23 @@ exports.createCategory = async (req, res, next) => {
   try {
     const result = await categorySchema.validateAsync(req.body)
 
-    const category = new Category (result)
-    
+    const category = new Category(result)
+
     category.addedBy = "mpk"
 
     await category.save()
 
     res.status(201).json(category)
   } catch (error) {
-  console.log("🚀 ~ file: category.js ~ line 56 ~ exports.createCategory= ~ error", error)
+    console.log("🚀 ~ file: category.js ~ line 56 ~ exports.createCategory= ~ error", error)
 
-  if (error.isJoi === true) error.status = 422
+    if (error.isJoi === true) error.status = 422
 
-  if (error.message.includes("E11000")) {
-    // @ts-ignore
-    return next(createError.Conflict(`Category name ${req.body.name} already exists`))
-  }
+    if (error.message.includes("E11000")) {
+      // @ts-ignore
+      return next(createError.Conflict(`Category name ${req.body.name} already exists`))
+    }
 
     next(createError(error))
-    
   }
 }
