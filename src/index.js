@@ -12,13 +12,13 @@ const res = require("express/lib/response")
 const app = express()
 
 app.use(cors())
-app.use(morgan("dev"))
+app.use(morgan("tiny"))
 app.use(express.json({ limit: "1mb" }))
 app.use(express.urlencoded({ limit: "1mb", extended: true }))
 
 const PORT = process.env.PORT
 const DATABASE = process.env.DATABASE
-const PREFIX = process.env.PREFIX
+const PREFIX = "/" + process.env.PREFIX
 
 app.use(PREFIX, categoryRoutes)
 app.use(PREFIX, dishRoutes)
