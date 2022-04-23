@@ -1,0 +1,6 @@
+node_modules
+.env
+package-lock.json
+http.category.rest
+http.dish.rest
+http.rest
